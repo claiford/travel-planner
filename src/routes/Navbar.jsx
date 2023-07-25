@@ -15,7 +15,7 @@ import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { NavLink } from 'react-router-dom';
 
-const pages = ['About'];
+const pages = ['Dashboard'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 function ResponsiveAppBar() {
@@ -45,29 +45,27 @@ function ResponsiveAppBar() {
 				<Toolbar disableGutters>
 					{/* LOGO */}
 					<AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
-					<NavLink to="/" style={{ textDecoration: 'none' }}>
-						<Typography
-							variant="h6"
-							noWrap
-							component="a"
-							sx={{
-								mr: 2,
-								display: { xs: 'none', md: 'flex' },
-								fontFamily: 'monospace',
-								fontWeight: 700,
-								letterSpacing: '.3rem',
-								color: 'inherit',
-								textDecoration: 'none',
-							}}
-						>
-							LOGO
-						</Typography>
+					<NavLink to="/" style={{ textDecoration: 'none', }}>
+							<Typography
+								variant="h6"
+								noWrap
+								sx={{
+									display: { xs: 'none', md: 'flex' },
+									fontFamily: 'monospace',
+									fontWeight: 700,
+									letterSpacing: '.3rem',
+									color: 'white',
+									textDecoration: 'none',
+								}}
+							>
+								LOGO
+							</Typography>
 					</NavLink>
 
-					{/*  */}
+					{/* Nav options */}
 					<Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
 						{pages.map((page) => (
-							<NavLink key={page} to="/about" style={{ textDecoration: 'none' }}>
+							<NavLink key={page} to={`/${page.toLowerCase()}`} style={{ textDecoration: 'none' }}>
 								<Button
 									onClick={handleCloseNavMenu}
 									sx={{ my: 2, color: 'white', display: 'block' }}
@@ -136,7 +134,8 @@ function ResponsiveAppBar() {
 					>
 						LOGO
 					</Typography>
-
+					
+					{/* Account / Login */}
 					{isLoggedIn ? (
 						<Box sx={{ flexGrow: 0 }}>
 							<Tooltip title="Open settings">
@@ -168,14 +167,17 @@ function ResponsiveAppBar() {
 							</Menu>
 						</Box>
 					) : (
-						<NavLink to="/login" style={{ textDecoration: 'none' }}>
-							<Button
-								sx={{ my: 2, color: 'white' }}
-								startIcon={<LoginRoundedIcon />}
-							>
-								Login
-							</Button>
-						</NavLink>
+						<Box sx={{ flexGrow: 0 }}>
+							<NavLink to="/login" style={{ textDecoration: 'none' }}>
+								<Button
+									sx={{ my: 2, color: 'white' }}
+									variant="outlined"
+									startIcon={<LoginRoundedIcon />}
+								>
+									Login
+								</Button>
+							</NavLink>
+						</Box>
 					)}
 					{/* Account details */}
 

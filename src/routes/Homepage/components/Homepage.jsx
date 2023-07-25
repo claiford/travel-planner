@@ -18,16 +18,14 @@ const Homepage = () => {
 	};
 
     return (
-        <div>
-            <Box sx={{
-                height: 'calc(100vh - 68.5px)',
-                display: 'flex',
-                justifyContent: 'center'
-            }}>
-                <img src={imageList[activeStep]} style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt={"home"}></img>
-                <Stepper activeStep={activeStep} handleNext={handleNext} handleBack={handleBack}></Stepper>
-            </Box>
-        </div>
+        <Box sx={{
+            height: '100%',
+            display: 'flex',
+            justifyContent: 'center'
+        }}>
+            <img src={imageList[activeStep]} style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt={"home"}></img>
+            <Stepper activeStep={activeStep} handleNext={handleNext} handleBack={handleBack}></Stepper>
+        </Box>
     )
 };
 
