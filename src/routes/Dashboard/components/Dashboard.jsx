@@ -1,14 +1,16 @@
 import { useState } from 'react';
 
-import { Box, Container } from '@mui/material';
+import { Box } from '@mui/material';
+import { Button } from '@mui/material'
 import { List, ListItem, ListItemButton, ListItemText } from '@mui/material';
 import travelData from '../../../travelData'
+import TripBrief from './TripBrief';
 
 const Dashboard = () => {
-    const [plan, setPlan] = useState(null)
+    const [trip, setTrip] = useState(null)
 
     const handlePlan = (itinerary) => {
-        setPlan((prevPlan) => itinerary)
+        setTrip((prevTrip) => itinerary)
     };
 
     const planArr = travelData.map((itinerary) => {
@@ -24,25 +26,26 @@ const Dashboard = () => {
     return (
         <Box sx={{
             display: ' flex',
-            height: '100%'
+            height: '100%',
+            width: '100%'
         }}>
-            {/* Aside - List of itineraries belonging to user */}
-            <Container sx={{ width: '30%', height: '100%', border: '2px solid red' }}>
+            {/* Aside - List of trip belonging to user */}
+            <Box sx={{ width: '20%', p: '20px', border: '2px solid black' }}>
                 <h3>Your itineraries</h3>
                 <List>
                     {planArr}
                 </List>
-            </Container>
+                <Button sx={{ width: '80%' }} variant="outlined" color="success" size="large">+ New Trip +</Button>
+            </Box>
 
-            {/* Content - Display itinerary overview */}
-            <Container>
-                { plan ? (
-                    <h3>{plan.destination}</h3>
+            {/* Content - Display trip summary */}
+            <Box sx={{ width: '80%', border: '2px solid black', position: 'relative' }}>
+                { trip ? (
+                    <TripBrief trip={trip}/>
                 ) : (
                     <h1>select an itinerary</h1>
                 )}
-            </Container>
-            
+            </Box>
         </Box>
     )
 };

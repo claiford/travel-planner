@@ -6,15 +6,13 @@ import Login from './Login/components/Login';
 
 const Main = () => {
     return ( 
-        <main>
-            <Box sx={{ height: 'calc(100vh - 68.5px)' }}>
-                <Routes>
-                    <Route path="/" element={<Homepage/>} />
-                    <Route path="/dashboard" element={<Dashboard/>} />
-                    <Route path="/login" element={<Login/>} />
-                </Routes>
-            </Box>
-        </main>
+        <Box className="Main" sx={{ height: 'calc(100vh - 68.5px)', width: '100vw' }}>
+            <Routes>
+                <Route path="/" element={<Homepage/>} />
+                <Route path="/dashboard" element={<Dashboard/>} />
+                <Route path="/login" element={<Login/>} />
+            </Routes>
+        </Box>
     )
 };
 
