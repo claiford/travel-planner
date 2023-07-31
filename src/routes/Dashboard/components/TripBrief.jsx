@@ -28,6 +28,18 @@ const TripBrief = ({ trip }) => {
         )
     })
 
+    const editorArr = trip.collaborators.editor.map((editor, index) => {
+        return (
+            <h4 key={index}>{editor}</h4>
+        )
+    })
+
+    const viewerArr = trip.collaborators.viewer.map((viewer, index) => {
+        return (
+            <h4 key={index}>{viewer}</h4>
+        )
+    })
+
     return (
         <>
             <Grid container spacing={0} sx={{ m: '20px' }}>
@@ -43,8 +55,17 @@ const TripBrief = ({ trip }) => {
                 </Grid>
 
                 {/* travellers */}
-                <Grid xs={12}>
-                    <h1>Travellers</h1>
+                <Grid xs={4}>
+                    <h3>Author</h3>
+                    <h4>{trip.collaborators.author}</h4>
+                </Grid>
+                <Grid xs={4}>
+                    <h3>Editors</h3>
+                    <h4>{editorArr}</h4>
+                </Grid>
+                <Grid xs={4}>
+                    <h3>Viewers</h3>
+                    <h4>{viewerArr}</h4>
                 </Grid>
 
                 {/* day cards */}
@@ -54,9 +75,8 @@ const TripBrief = ({ trip }) => {
                         {dayArr}
                     </Stack>
                 </Grid>
-
-
             </Grid>
+            
             {/* actions */}
             <AppBar position="relative" sx={{ position: 'absolute', bottom: '0' }}>
                 <Toolbar sx={{ justifyContent: 'space-between' }} >
