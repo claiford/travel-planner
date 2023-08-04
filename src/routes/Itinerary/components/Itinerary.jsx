@@ -14,7 +14,7 @@ Leaflet.Icon.Default.mergeOptions({
     shadowUrl: require('leaflet/dist/images/marker-shadow.png')
 });
 
-const TripDetail = () => {
+const Itinerary = () => {
     return (
         <MapContainer center={[51.505, -0.09]} zoom={13} scrollWheelZoom={false} style={{ height: '100%', width: '100%' }}>
             <TileLayer
@@ -35,4 +35,4 @@ const TripDetail = () => {
     )
 };
 
-export default TripDetail;
+export default Itinerary;

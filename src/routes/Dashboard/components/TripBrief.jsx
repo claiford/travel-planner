@@ -90,7 +90,7 @@ const TripBrief = () => {
                             </IconButton>
                         </Box>
                         <Box>
-                            <Link to={`/trip/${activeTrip.id}`}>
+                            <Link to={`/itinerary/${activeTrip.id}`}>
                                 <Button
                                     sx={{ my: 2, color: 'white' }}
                                     variant="text"

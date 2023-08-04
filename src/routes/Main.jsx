@@ -2,7 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 import { Box } from '@mui/material';
 import Homepage from './Homepage/components/Homepage'
 import Dashboard from './Dashboard/components/Dashboard';
-import TripDetail from './Dashboard/components/TripDetail';
+import Itinerary from './Itinerary/components/Itinerary';
 import Login from './Login/components/Login';
 import TripBrief from './Dashboard/components/TripBrief';
 
@@ -14,7 +14,7 @@ const Main = () => {
                 <Route path="/dashboard" element={<Dashboard/>}>
                     <Route path="/dashboard/:tripID" element={<TripBrief/>} />
                 </Route>
-                <Route path="/trip/:tripID" element={<TripDetail/>} />
+                <Route path="/itinerary/:tripID" element={<Itinerary/>} />
                 <Route path="/login" element={<Login/>} />
             </Routes>
         </Box>
