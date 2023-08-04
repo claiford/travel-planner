@@ -5,10 +5,10 @@ import Typography from '@mui/material/Typography';
 import { List, ListItem, ListItemText } from '@mui/material';
 
 const DayCard = ({ day, num }) => {
-    const locArr = day.locations.map((location) => {
+    const locArr = day.day_locs.map((location) => {
         return (
-            <ListItem disablePadding key={location} sx={{ textAlign: 'center' }}>
-                <ListItemText primary={location} />
+            <ListItem disablePadding key={location.loc_name} sx={{ textAlign: 'center' }}>
+                <ListItemText primary={location.loc_name} />
             </ListItem>
         )
     });
@@ -21,10 +21,10 @@ const DayCard = ({ day, num }) => {
                         Day {num}
                     </Typography>
                     <Typography variant="h6" component="div">
-                        {day.title}
+                        {day.day_title}
                     </Typography>
                     <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                        {day.desc}
+                        {day.day_desc}
                     </Typography>
                     <List>
                         {locArr}

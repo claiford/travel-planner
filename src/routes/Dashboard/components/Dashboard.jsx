@@ -10,11 +10,11 @@ const Dashboard = () => {
     const planArr = travelData.map((trip) => {
         return (
             <ListItem disablePadding key={trip.id}>
-                <ListItemButton>
-                    <Link to={`/dashboard/${trip.id}`} style={{ textDecoration: 'none', color: 'black' }}>
+                <Link to={`/dashboard/${trip.id}`} style={{ width: '100%', textDecoration: 'none', color: 'black' }}>
+                    <ListItemButton>
                         <ListItemText primary={trip.name} />
-                    </Link>
-                </ListItemButton>
+                    </ListItemButton>
+                </Link>
             </ListItem>
         )
     })
