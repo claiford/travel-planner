@@ -33,12 +33,15 @@ const iconColors = ["black", "red", "yellow", "blue", "green"];
 
 const MyMap = ({ activeTrip }) => {
     const map = useMap();
-
+    
     // set OSM basemap
     const basemap = (L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'  
     }));
     map.addLayer(basemap);
+    L.control.attribution({
+        position: 'topright'
+    }).addTo(map)
 
     // draw markers
     const allMarkerPos = [];
@@ -46,9 +49,7 @@ const MyMap = ({ activeTrip }) => {
         for (const location of day.day_locs) {
             allMarkerPos.push([location.loc_lat, location.loc_lon]);
 
-            console.log("IDX", day_idx)
             const marker = L.marker([location.loc_lat, location.loc_lon], {icon: icons[iconColors[day_idx]]});
-
             const popup = L.popup({content:
                 `<div class="popup">
                     <span>${location.loc_name}</span><br>
@@ -56,7 +57,6 @@ const MyMap = ({ activeTrip }) => {
                 `
             })
             marker.bindPopup(popup);
-
             marker.addTo(map);
         }
     }
