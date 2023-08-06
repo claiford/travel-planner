@@ -1,14 +1,22 @@
 import { useState } from 'react';
-import Box from '@mui/material/Box';
-import { Button, Typography, Checkbox } from '@mui/material';
+import { Box, Button, Typography, Checkbox } from '@mui/material';
+import { FormControl, FormGroup, FormControlLabel } from '@mui/material';
+import { grey } from '@mui/material/colors';
 import Skeleton from '@mui/material/Skeleton';
 import Drawer from '@mui/material/Drawer';
 import SquareIcon from '@mui/icons-material/Square';
 import CropFreeRoundedIcon from '@mui/icons-material/CropFreeRounded';
 
+const colors = {
+    black: "#151515",
+    red: "#a63d40",
+    yellow: "#e9b872",
+    blue: "#6494aa", 
+    green: "#90a959"
+}
 const drawerHeight = 500;
 
-const Toolbox = ({ activeTrip }) => {
+const Toolbox = ({ activeTrip, activeDays, handleActiveDays }) => {
     const [open, setOpen] = useState(false);
 
     const toggleDrawer = () => {
@@ -17,18 +25,23 @@ const Toolbox = ({ activeTrip }) => {
 
     const nodes = activeTrip.days.map((day, idx) => {
         return (
-            // <IconButton className="btn" key={day.day_title}>test</IconButton>
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-                <Checkbox
-                    icon={<CropFreeRoundedIcon sx={{ color: 'white', border: '2px solid yellow', borderRadius: 1 }} />}
-                    checkedIcon={<SquareIcon sx={{ color: 'white', border: '2px solid yellow', borderRadius: 1}} />}
-                    sx={{
-                        width: 10,
-                        height: 10,
-                    }}
-                />
-                <Typography sx={{ color: 'white' }}>{idx + 1}</Typography>
-            </Box>
+            <FormControlLabel
+                key={idx}
+                value={idx + 1}
+                control={<Checkbox
+                            icon={<CropFreeRoundedIcon sx={{ color: 'white', border: `2px solid ${Object.values(colors)[idx]}`, borderRadius: 1 }} />}
+                            checkedIcon={<SquareIcon sx={{ color: 'white', border: `2px solid ${Object.values(colors)[idx]}`, borderRadius: 1 }} />}
+                            sx={{
+                                width: 10,
+                                height: 10,
+                                mb: 1,
+                            }}
+                            checked={activeDays[String(idx + 1)]}
+                            onChange={() => handleActiveDays(idx + 1)}
+                        />}
+                label={<Typography sx={{ color: 'white' }}>{idx + 1}</Typography>}
+                labelPlacement="bottom"
+            />
         )
     })
 
@@ -36,22 +49,18 @@ const Toolbox = ({ activeTrip }) => {
         <Box className="toolbox" sx={{ width: '100%', position: 'absolute', bottom: '0', zIndex: '1001' }}>
             <Box sx={{
                 height: (open ? drawerHeight + 100 : 100),
-                backgroundColor: "#404040"
+                backgroundColor: grey[800]
             }}>
-                <Box sx={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    gap: 3,
-                    px: 2,
-                    pt: 2,
-                }}>
-                    {nodes}
-                </Box>
+                <FormControl sx={{ display: 'block' }} component="fieldset">
+                    <FormGroup aria-label="position" row sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
+                        {nodes}
+                    </FormGroup>
+                </FormControl>
                 <Button
                     sx={{
                         width: '50%',
                         '&:hover': {
-                            backgroundColor: '#2f2f2f',
+                            backgroundColor: grey[900],
                         }
                     }}
                     onClick={toggleDrawer}
@@ -60,7 +69,7 @@ const Toolbox = ({ activeTrip }) => {
                     <Box sx={{
                         width: '90%',
                         height: 6,
-                        backgroundColor: '#8f8f8f',
+                        backgroundColor: grey[500],
                         borderRadius: 3,
                     }}></Box>
                 </Button>
@@ -93,93 +102,3 @@ const Toolbox = ({ activeTrip }) => {
 }
 
 export default Toolbox;
-
-
-
-// import { useState } from 'react';
-// import { Global } from '@emotion/react';
-// import { styled } from '@mui/material/styles';
-// import { grey } from '@mui/material/colors';
-// import Button from '@mui/material/Button';
-// import Box from '@mui/material/Box';
-// import Skeleton from '@mui/material/Skeleton';
-// import SwipeableDrawer from '@mui/material/SwipeableDrawer';
-
-// const drawerBleeding = 30;
-
-// function SwipeableEdgeDrawer({ activeTrip }) {
-//     const [open, setOpen] = useState(false);
-
-//     const toggleDrawer = (newOpen) => () => {
-//         setOpen(newOpen);
-//     };
-
-//     const nodes = activeTrip.days.map((day) => {
-//         return (
-//             <Button className="btn" key={day.day_title}>test</Button>
-//         )
-//     })
-
-//     return (
-//         <>
-//             {/* Setting height of Expansion */}
-//             <Global
-//                 styles={{
-//                     '.MuiDrawer-root > .MuiPaper-root': {
-//                         height: `calc(50% - ${drawerBleeding}px)`,
-//                         overflow: 'visible',
-//                     },
-//                 }}
-//             />
-//             <SwipeableDrawer
-//                 anchor="bottom"
-//                 open={open}
-//                 onClose={toggleDrawer(false)}
-//                 onOpen={toggleDrawer(true)}
-//                 swipeAreaWidth={drawerBleeding}
-//                 disableSwipeToOpen={false}
-//                 ModalProps={{
-//                     keepMounted: true,
-//                 }}
-//             >
-//                 {/* Overflow */}
-//                 <Box
-//                     sx={{
-//                         height: drawerBleeding,
-//                         position: 'absolute',
-//                         top: -drawerBleeding,
-//                         visibility: 'visible',
-//                         right: 0,
-//                         left: 0,
-//                         backgroundColor: "#404040"
-//                     }}
-//                 >
-//                     {/* Puller */}
-//                     <Box sx={{
-//                         width: 30,
-//                         height: 6,
-//                         backgroundColor: '#8f8f8f',
-//                         borderRadius: 3,
-//                         position: 'absolute',
-//                         bottom: (drawerBleeding / 2) - 3,
-//                         left: 'calc(50% - 15px)',
-//                     }}></Box>
-//                 </Box>
-
-//                 {/* Drawer content */}
-//                 <Box
-//                     sx={{
-//                         px: 2,
-//                         py: 2,
-//                         height: '100%',
-//                         overflow: 'auto',
-//                     }}
-//                 >
-//                     <Skeleton variant="rectangular" height="100%" />
-//                 </Box>
-//             </SwipeableDrawer>
-//         </>
-//     );
-// }
-
-// export default SwipeableEdgeDrawer;

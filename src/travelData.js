@@ -246,7 +246,3 @@ const travelData = [
 ]
 
 export default travelData;
-
-
-// plan an itinerary to {destination} for {num} days. For each day, provide a title and description of the day's activities, then list out the locations with their corresponding name, description, latitude and longitude values.
-// Structure the results in the following format: inside a days array, each day is represented as an object with "day_title", "day_desc", and "day_locs" properties. The "day_locs" property contains an array of objects, each representing a location visited on that day, with the "loc_name", "loc_desc", "loc_lat", and "loc_lon" values.

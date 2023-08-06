@@ -9,15 +9,14 @@ import DoubleArrowRoundedIcon from '@mui/icons-material/DoubleArrowRounded';
 import StarRoundedIcon from '@mui/icons-material/StarRounded';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import ShareRoundedIcon from '@mui/icons-material/ShareRounded';
-import { Link, useParams } from 'react-router-dom'
+import { Link, useParams, useOutletContext } from 'react-router-dom'
 
 import DayCard from "./DayCard";
 
-import travelData from '../../../travelData'
-
 const TripBrief = () => {
     const {tripID} = useParams()
-    const activeTrip = travelData.find((trip) => trip.id === tripID);
+    const trips = useOutletContext();
+    const activeTrip = trips.find((trip) => trip.id === tripID);
 
     const dayArr = activeTrip.days.map((day, index) => {
         return (
