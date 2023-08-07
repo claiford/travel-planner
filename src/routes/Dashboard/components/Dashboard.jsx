@@ -5,7 +5,7 @@ import { Configuration, OpenAIApi } from "openai";
 import ShortUniqueId from 'short-unique-id';
 import { createClient } from '@supabase/supabase-js'
 
-const PROMPT_TEMPLATE = `
+    const PROMPT_TEMPLATE = `
 Plan an itinerary to {destination} for {num} days.\
 For each day, provide a title and description of the day's activities,\
 then list out the locations with their corresponding name, description, latitude and longitude values.
@@ -30,7 +30,15 @@ const supabase = createClient(supabaseUrl, supabaseKey)
 
 const Dashboard = () => {
     const [trips, setTrips] = useState([]);
-
+    
+    const getTrips = async () => {
+        const { data, error } = await supabase
+        .from('itineraries')
+        .select()
+        
+        setTrips(data)
+    }
+    
     const newTrip = async () => {
         const prompt = PROMPT_TEMPLATE.replace("{destination}", "Singapore").replace("{num}", "1");
 
@@ -44,14 +52,6 @@ const Dashboard = () => {
         console.log(JSON.parse(result.replace(/[\r\n]/gm, '')));
 
         console.log(uid.randomUUID());
-    }
-
-    const getTrips = async () => {
-        const { data, error } = await supabase
-            .from('itineraries')
-            .select()
-
-        setTrips(data)
     }
 
     useEffect(() => {
@@ -78,17 +78,19 @@ const Dashboard = () => {
         }}>
             {/* Aside - List of trip belonging to user */}
             <Box sx={{ width: '20%', p: '20px', border: '2px solid black' }}>
-                <h3>Your itineraries</h3>
+                <h3>Your trips</h3>
                 <List>
                     {planArr}
                 </List>
-                <Button sx={{ width: '80%' }} variant="outlined" color="success" size="large" onClick={newTrip}>+ New Trip +</Button>
+                <Link to={`/dashboard/new`}>
+                    <Button sx={{ width: '80%' }} variant="outlined" size="large">+ New Trip +</Button>
+                </Link>
             </Box>
 
             {/* Content - Display trip summary */}
             <Box sx={{ width: '80%', border: '2px solid black', position: 'relative' }}>
                 {useOutlet() ? (
-                    <Outlet context={trips}/>
+                    <Outlet context={[trips, newTrip]}/>
                 ) : (
                     <h1>Select itinerary to view</h1>
                 )}

@@ -15,7 +15,7 @@ import DayCard from "./DayCard";
 
 const TripBrief = () => {
     const {tripID} = useParams()
-    const trips = useOutletContext();
+    const trips = useOutletContext()[0];
     const activeTrip = trips.find((trip) => trip.id === tripID);
 
     const dayArr = activeTrip.days.map((day, index) => {

@@ -5,6 +5,7 @@ import Dashboard from './Dashboard/components/Dashboard';
 import Itinerary from './Itinerary/components/Itinerary';
 import Login from './Login/components/Login';
 import TripBrief from './Dashboard/components/TripBrief';
+import NewTrip from './Dashboard/components/NewTrip';
 
 const Main = () => {
     return ( 
@@ -13,6 +14,7 @@ const Main = () => {
                 <Route path="/" element={<Homepage/>} />
                 <Route path="/dashboard" element={<Dashboard/>}>
                     <Route path="/dashboard/:tripID" element={<TripBrief/>} />
+                    <Route path="/dashboard/new" element={<NewTrip/>} />
                 </Route>
                 <Route path="/itinerary/:tripID" element={<Itinerary/>} />
                 <Route path="/login" element={<Login/>} />
