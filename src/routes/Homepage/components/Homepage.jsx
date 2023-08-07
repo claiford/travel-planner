@@ -10,7 +10,7 @@ const Homepage = () => {
     const [activeStep, setActiveStep] = useState(0);
 
 	const handleNext = () => {
-		setActiveStep((prevActiveStep) => prevActiveStep + 1);
+        (activeStep === 2) ? setActiveStep(0) : setActiveStep((prevActiveStep) => prevActiveStep + 1);
 	};
 
 	const handleBack = () => {
