@@ -1,9 +1,15 @@
 import { useState, useEffect } from 'react';
-import { Box, Button, List, ListItem, ListItemButton, ListItemText } from '@mui/material';
+import { Box, Button, LinearProgress, Typography } from '@mui/material';
+import { List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
+import { Dialog, DialogTitle } from '@mui/material';
+import AirplaneTicketRoundedIcon from '@mui/icons-material/AirplaneTicketRounded';
+import LocationOnRoundedIcon from '@mui/icons-material/LocationOnRounded';
+import TodayRoundedIcon from '@mui/icons-material/TodayRounded';
+import EventRoundedIcon from '@mui/icons-material/EventRounded';
 import { Link, Outlet, useOutlet } from 'react-router-dom';
 import { Configuration, OpenAIApi } from "openai";
-import ShortUniqueId from 'short-unique-id';
 import { createClient } from '@supabase/supabase-js'
+import ShortUniqueId from 'short-unique-id';
 
 const PROMPT_TEMPLATE = `
 Plan an itinerary to {destination} for {num_days} days. \
@@ -30,6 +36,21 @@ const supabase = createClient(supabaseUrl, supabaseKey)
 
 const Dashboard = () => {
     const [trips, setTrips] = useState([]);
+    const [generating, setGenerating] = useState({
+        status: false,
+        info: {
+            title: "",
+            destination: "",
+            start_date: "",
+            end_date: ""
+        }
+    });
+
+    const [dialogOpen, setDialogOpen] = useState(false)
+
+    const handleDialog = () => {
+        setDialogOpen(dialogOpen ? false : true);
+    }
 
     const getTrips = async () => {
         const { data, error } = await supabase
@@ -42,6 +63,16 @@ const Dashboard = () => {
     const newTrip = async (start_date, end_date, destination, title) => {
         console.log("GENERATING NEW TRIP");
         
+        setGenerating({
+            status: true,
+            info: {
+                title: title,
+                destination: destination,
+                start_date: start_date,
+                end_date: end_date
+            }
+        })
+
         // calculate num_days using start and end dates
         const diff = new Date(end_date) - new Date(start_date)
         const num_days = Math.ceil(diff / (1000 * 60 * 60 * 24)) + 1;
@@ -78,6 +109,17 @@ const Dashboard = () => {
         // retrieve updated trips from database
         getTrips()
 
+        setGenerating({
+            status: false,
+            info: {
+                title: title,
+                destination: destination,
+                start_date: start_date,
+                end_date: end_date
+            }
+        })
+        handleDialog()
+
         console.log("NEW TRIP ADDED");
     }
 
@@ -105,13 +147,31 @@ const Dashboard = () => {
         }}>
             {/* Aside - List of trip belonging to user */}
             <Box sx={{ width: '20%', p: '20px', border: '2px solid black' }}>
-                <h3>Your trips</h3>
+                <Typography variant="h5" fontWeight={700} align='left' p={2}>Your Trips</Typography>
                 <List>
                     {planArr}
                 </List>
-                <Link to={`/dashboard/new`}>
-                    <Button sx={{ width: '80%' }} variant="outlined" size="large">+ New Trip +</Button>
-                </Link>
+
+                {/* New Trip functionalities */}
+                {generating.status ? (
+                    <Button sx={{ width: '80%', borderWidth: '2px', my: 4 }} variant="outlined" color="warning" size="large" onClick={handleDialog}>
+                        <Typography fontWeight={700}>
+                            Generating
+                            <LinearProgress
+                                color="warning"
+                                sx={{ height: 10, borderRadius: 5, mx: 'auto', my: 1 }}
+                            />
+                        </Typography>
+                    </Button>
+                ) : (
+                    <Link to={`/dashboard/new`}>
+                        <Button sx={{ width: '80%', borderWidth: '2px', my: 4 }} variant="outlined" size="large">
+                            <Typography fontWeight={700}>
+                                New Trip
+                            </Typography>
+                        </Button>
+                    </Link>
+                )}
             </Box>
 
             {/* Content - Display trip summary */}
@@ -122,6 +182,51 @@ const Dashboard = () => {
                     <h1>Select itinerary to view</h1>
                 )}
             </Box>
+
+            {/* Dialog popup for successful newTrip generation */}
+            <Dialog open={dialogOpen} onClose={handleDialog} PaperProps={{ sx: { width: '40%', py: 5, borderRadius: 5 } }}>
+                <DialogTitle>
+                    <Typography
+                        fontWeight={700}
+                        fontSize={'1.5rem'}
+                        letterSpacing={3}
+                        align='center'
+                        width='50%'
+                        mx='auto'
+                        p={2}
+                        borderRadius={3}
+                        backgroundColor={generating.status ? "#e9b872" : "#90a959" }
+                    >
+                        {generating.status ? "GENERATING" : "GENERATED" }
+                    </Typography>
+                </DialogTitle>
+                <List sx={{ width: 'auto', mx: 'auto' }}>
+                    <ListItem>
+                        <ListItemIcon>
+                            <AirplaneTicketRoundedIcon />
+                        </ListItemIcon>
+                        <ListItemText primary={generating.info.title} />
+                    </ListItem>
+                    <ListItem>
+                        <ListItemIcon>
+                            <LocationOnRoundedIcon />
+                        </ListItemIcon>
+                        <ListItemText primary={generating.info.destination} />
+                    </ListItem>
+                    <ListItem>
+                        <ListItemIcon>
+                            <TodayRoundedIcon />
+                        </ListItemIcon>
+                        <ListItemText primary={generating.info.start_date} />
+                    </ListItem>
+                    <ListItem>
+                        <ListItemIcon>
+                            <EventRoundedIcon />
+                        </ListItemIcon>
+                        <ListItemText primary={generating.info.end_date} />
+                    </ListItem>
+                </List>
+            </Dialog>
         </Box>
     )
 };
