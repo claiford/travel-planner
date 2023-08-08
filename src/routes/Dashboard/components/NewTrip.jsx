@@ -10,8 +10,8 @@ const NewTrip = () => {
         destination: "",
         title: ""
     })
-    const newTrip = useOutletContext()[1];
-    const navigate = useNavigate()
+    const addTrip = useOutletContext()[1];
+    const navigate = useNavigate();
 
     const handleFormChange = (e, key) => {
         setFormValues((prevFormValues) => {
@@ -23,7 +23,7 @@ const NewTrip = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        newTrip(formValues.start_date, formValues.end_date, formValues.destination, formValues.title);
+        addTrip(formValues.start_date, formValues.end_date, formValues.destination, formValues.title);
         navigate("/dashboard")
     }
 

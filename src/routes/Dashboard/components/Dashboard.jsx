@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import { Link, Outlet, useOutlet, useNavigate } from 'react-router-dom';
+
 import { Box, Button, LinearProgress, Typography } from '@mui/material';
 import { List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import { Dialog, DialogTitle } from '@mui/material';
@@ -6,7 +8,7 @@ import AirplaneTicketRoundedIcon from '@mui/icons-material/AirplaneTicketRounded
 import LocationOnRoundedIcon from '@mui/icons-material/LocationOnRounded';
 import TodayRoundedIcon from '@mui/icons-material/TodayRounded';
 import EventRoundedIcon from '@mui/icons-material/EventRounded';
-import { Link, Outlet, useOutlet } from 'react-router-dom';
+
 import { Configuration, OpenAIApi } from "openai";
 import { createClient } from '@supabase/supabase-js'
 import ShortUniqueId from 'short-unique-id';
@@ -35,6 +37,7 @@ const supabase = createClient(supabaseUrl, supabaseKey)
 ///// API CONFIGS /////
 
 const Dashboard = () => {
+    const navigate = useNavigate()
     const [trips, setTrips] = useState([]);
     const [generating, setGenerating] = useState({
         status: false,
@@ -60,9 +63,9 @@ const Dashboard = () => {
         setTrips(data)
     }
 
-    const newTrip = async (start_date, end_date, destination, title) => {
+    const addTrip = async (start_date, end_date, destination, title) => {
         console.log("GENERATING NEW TRIP");
-        
+
         setGenerating({
             status: true,
             info: {
@@ -123,6 +126,18 @@ const Dashboard = () => {
         console.log("NEW TRIP ADDED");
     }
 
+    const deleteTrip = async (tripID) => {
+        const { error } = await supabase
+            .from('itineraries')
+            .delete()
+            .eq('id', tripID)
+
+        // retrieve updated trips from database
+        getTrips();
+
+        navigate("/dashboard");
+    }
+
     useEffect(() => {
         getTrips()
     }, []);
@@ -177,13 +192,13 @@ const Dashboard = () => {
             {/* Content - Display trip summary */}
             <Box sx={{ width: '80%', border: '2px solid black', position: 'relative' }}>
                 {useOutlet() ? (
-                    <Outlet context={[trips, newTrip]} />
+                    <Outlet context={[trips, addTrip, deleteTrip]} />
                 ) : (
                     <h1>Select itinerary to view</h1>
                 )}
             </Box>
 
-            {/* Dialog popup for successful newTrip generation */}
+            {/* Dialog popup for successful addTrip generation */}
             <Dialog open={dialogOpen} onClose={handleDialog} PaperProps={{ sx: { width: '40%', py: 5, borderRadius: 5 } }}>
                 <DialogTitle>
                     <Typography
@@ -195,9 +210,9 @@ const Dashboard = () => {
                         mx='auto'
                         p={2}
                         borderRadius={3}
-                        backgroundColor={generating.status ? "#e9b872" : "#90a959" }
+                        backgroundColor={generating.status ? "#e9b872" : "#90a959"}
                     >
-                        {generating.status ? "GENERATING" : "GENERATED" }
+                        {generating.status ? "GENERATING" : "GENERATED"}
                     </Typography>
                 </DialogTitle>
                 <List sx={{ width: 'auto', mx: 'auto' }}>

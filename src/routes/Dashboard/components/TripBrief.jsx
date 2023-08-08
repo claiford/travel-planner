@@ -1,21 +1,20 @@
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
-import Stack from '@mui/material/Stack';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Button from '@mui/material/Button';
+import { Link, useParams, useOutletContext } from 'react-router-dom'
+
+import { Box, Stack, AppBar, Toolbar, IconButton, Button } from '@mui/material'
+import Grid from '@mui/material/Unstable_Grid2';
 import DoubleArrowRoundedIcon from '@mui/icons-material/DoubleArrowRounded';
 import StarRoundedIcon from '@mui/icons-material/StarRounded';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import ShareRoundedIcon from '@mui/icons-material/ShareRounded';
-import { Link, useParams, useOutletContext } from 'react-router-dom'
+import { grey } from '@mui/material/colors';
 
 import DayCard from "./DayCard";
 
 const TripBrief = () => {
     const { tripID } = useParams()
     const trips = useOutletContext()[0];
+    const deleteTrip = useOutletContext()[2]
+
     const activeTrip = trips.find((trip) => trip.id === tripID);
 
     const dayArr = activeTrip ? activeTrip.days.map((day, index) => {
@@ -24,17 +23,17 @@ const TripBrief = () => {
         )
     }) : null
 
-    const editorArr = activeTrip ? activeTrip.collaborators.editor.map((editor, index) => {
-        return (
-            <h4 key={index}>{editor}</h4>
-        )
-    }) : null
+    // const editorArr = activeTrip ? activeTrip.collaborators.editor.map((editor, index) => {
+    //     return (
+    //         <h4 key={index}>{editor}</h4>
+    //     )
+    // }) : null
 
-    const viewerArr = activeTrip ? activeTrip.collaborators.viewer.map((viewer, index) => {
-        return (
-            <h4 key={index}>{viewer}</h4>
-        )
-    }) : null
+    // const viewerArr = activeTrip ? activeTrip.collaborators.viewer.map((viewer, index) => {
+    //     return (
+    //         <h4 key={index}>{viewer}</h4>
+    //     )
+    // }) : null
 
     return (
         activeTrip ? (
@@ -52,7 +51,7 @@ const TripBrief = () => {
                     </Grid>
 
                     {/* travellers */}
-                    <Grid xs={4}>
+                    {/* <Grid xs={4}>
                         <h3>Author</h3>
                         <h4>{activeTrip.collaborators.author}</h4>
                     </Grid>
@@ -63,7 +62,7 @@ const TripBrief = () => {
                     <Grid xs={4}>
                         <h3>Viewers</h3>
                         {viewerArr}
-                    </Grid>
+                    </Grid> */}
 
                     {/* day cards */}
                     <Grid xs={12}>
@@ -75,16 +74,16 @@ const TripBrief = () => {
                 </Grid>
 
                 {/* actions */}
-                <AppBar position="relative" sx={{ position: 'absolute', bottom: '0' }}>
-                    <Toolbar sx={{ justifyContent: 'space-between' }} >
+                <AppBar position="relative" sx={{ position: 'absolute', bottom: '0'}}>
+                    <Toolbar sx={{ justifyContent: 'space-between', backgroundColor: grey[800]  }} >
                         <Box>
-                            <IconButton>
+                            <IconButton disabled>
                                 <ShareRoundedIcon />
                             </IconButton>
-                            <IconButton>
-                                <StarRoundedIcon color="warning" />
+                            <IconButton disabled>
+                                <StarRoundedIcon />
                             </IconButton>
-                            <IconButton>
+                            <IconButton onClick={() => deleteTrip(activeTrip.id)}>
                                 <DeleteRoundedIcon color='error' />
                             </IconButton>
                         </Box>
@@ -103,7 +102,7 @@ const TripBrief = () => {
                 </AppBar>
             </>
         ) : (
-            <h1>select an itinerary</h1>
+            null
         )
     )
 };
