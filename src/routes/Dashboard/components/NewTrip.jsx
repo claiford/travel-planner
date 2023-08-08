@@ -66,7 +66,6 @@ const NewTrip = () => {
                     backgroundColor: grey[300]
                 }}>
                     <TextField
-                        focused
                         required
                         sx={{ width: "50%", borderColor: "white" }}
                         label="Destination"
@@ -74,7 +73,6 @@ const NewTrip = () => {
                         onChange={((e) => handleFormChange(e, "destination"))}
                     />
                     <TextField
-                        focused
                         required
                         sx={{ width: "100%" }}
                         label="Trip Title"

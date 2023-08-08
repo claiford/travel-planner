@@ -14,27 +14,27 @@ import { Link, useParams, useOutletContext } from 'react-router-dom'
 import DayCard from "./DayCard";
 
 const TripBrief = () => {
-    const {tripID} = useParams()
+    const { tripID } = useParams()
     const trips = useOutletContext()[0];
     const activeTrip = trips.find((trip) => trip.id === tripID);
 
-    const dayArr = activeTrip.days.map((day, index) => {
+    const dayArr = activeTrip ? activeTrip.days.map((day, index) => {
         return (
             <DayCard key={index} day={day} num={index + 1} />
         )
-    })
+    }) : null
 
-    const editorArr = activeTrip.collaborators.editor.map((editor, index) => {
+    const editorArr = activeTrip ? activeTrip.collaborators.editor.map((editor, index) => {
         return (
             <h4 key={index}>{editor}</h4>
         )
-    })
+    }) : null
 
-    const viewerArr = activeTrip.collaborators.viewer.map((viewer, index) => {
+    const viewerArr = activeTrip ? activeTrip.collaborators.viewer.map((viewer, index) => {
         return (
             <h4 key={index}>{viewer}</h4>
         )
-    })
+    }) : null
 
     return (
         activeTrip ? (
