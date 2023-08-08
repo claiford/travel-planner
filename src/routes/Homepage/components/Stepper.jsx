@@ -1,15 +1,11 @@
 import { useEffect } from 'react';
-import { useTheme } from '@mui/material/styles';
 import { grey } from '@mui/material/colors';
 import MobileStepper from '@mui/material/MobileStepper';
-import Button from '@mui/material/Button';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import { IconButton } from '@mui/material';
 
 export default function DotsMobileStepper({ activeStep, handleNext, handleBack }) {
-	const theme = useTheme();
-
 	useEffect(() => {
 		const timer = setInterval(() => {
 			handleNext();
@@ -33,7 +29,8 @@ export default function DotsMobileStepper({ activeStep, handleNext, handleBack }
 				flexGrow: 1,
 				maxWidth: '900px',
 				borderRadius: '10px 10px 0 0',
-				backgroundColor: grey[800],
+				// backgroundColor: grey[800],
+				backgroundColor: 'transparent',
 				position: 'fixed',
 				bottom: 0,
 				'& .MuiMobileStepper-dots': {
@@ -45,16 +42,16 @@ export default function DotsMobileStepper({ activeStep, handleNext, handleBack }
 					borderRadius: '10px',
 				},
 				'& .MuiMobileStepper-dotActive': {
-					backgroundColor: grey[300]
+					backgroundColor: grey[800]
 				}
 			}}
 			backButton={
-				<IconButton onClick={handleBack} disabled={activeStep === 0} sx={{ color: grey[300] }}>
+				<IconButton onClick={handleBack} disabled={activeStep === 0} sx={{ color: grey[800] }}>
 					<KeyboardArrowLeft />
 				</IconButton>
 			}
 			nextButton={
-				<IconButton onClick={handleNext} disabled={activeStep === 2} sx={{ color: grey[300] }}>
+				<IconButton onClick={handleNext} disabled={activeStep === 2} sx={{ color: grey[800] }}>
 					<KeyboardArrowRight />
 				</IconButton>
 			}

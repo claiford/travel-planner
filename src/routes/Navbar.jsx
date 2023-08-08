@@ -13,7 +13,7 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import AdbIcon from '@mui/icons-material/Adb';
+import AirplaneTicketIcon from '@mui/icons-material/AirplaneTicket';
 import { NavLink } from 'react-router-dom';
 import { grey } from '@mui/material/colors';
 
@@ -46,21 +46,20 @@ function ResponsiveAppBar() {
 			<Container maxWidth="false">
 				<Toolbar disableGutters>
 					{/* LOGO */}
-					<AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+					<AirplaneTicketIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
 					<NavLink to="/" style={{ textDecoration: 'none', }}>
 							<Typography
 								variant="h6"
 								noWrap
 								sx={{
 									display: { xs: 'none', md: 'flex' },
-									fontFamily: 'monospace',
 									fontWeight: 700,
-									// letterSpacing: '.2rem',
+									letterSpacing: '.2rem',
 									color: 'white',
 									textDecoration: 'none',
 								}}
 							>
-								tpg
+								gpt
 							</Typography>
 					</NavLink>
 					<Divider orientation="vertical" variant="middle" />
@@ -118,7 +117,7 @@ function ResponsiveAppBar() {
 					</Box>
 
 					{/* MIDDLE LOGO */}
-					<AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
+					<AirplaneTicketIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
 					<Typography
 						variant="h5"
 						noWrap
@@ -135,7 +134,7 @@ function ResponsiveAppBar() {
 							textDecoration: 'none',
 						}}
 					>
-						gpTravel
+						gpt
 					</Typography>
 					
 					{/* Account / Login */}
