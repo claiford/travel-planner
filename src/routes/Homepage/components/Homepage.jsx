@@ -1,21 +1,18 @@
 import { useState } from 'react';
 import { Box } from '@mui/material';
 import Stepper from './Stepper'
-
-const images = require.context('../images')
-const imageList = images.keys().map(image => images(image));
-
+import Display from './Display';
 
 const Homepage = () => {
     const [activeStep, setActiveStep] = useState(0);
 
-	const handleNext = () => {
+    const handleNext = () => {
         (activeStep === 2) ? setActiveStep(0) : setActiveStep((prevActiveStep) => prevActiveStep + 1);
-	};
+    };
 
-	const handleBack = () => {
-		setActiveStep((prevActiveStep) => prevActiveStep - 1);
-	};
+    const handleBack = () => {
+        setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    };
 
     return (
         <Box sx={{
@@ -23,8 +20,8 @@ const Homepage = () => {
             display: 'flex',
             justifyContent: 'center'
         }}>
-            <img src={imageList[activeStep]} style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt={"home"}></img>
-            <Stepper activeStep={activeStep} handleNext={handleNext} handleBack={handleBack}></Stepper>
+            <Display activeStep={activeStep} />
+            <Stepper activeStep={activeStep} handleNext={handleNext} handleBack={handleBack} />
         </Box>
     )
 };

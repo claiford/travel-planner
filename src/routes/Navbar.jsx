@@ -1,6 +1,7 @@
 import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
+import { Divider } from '@mui/material';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
@@ -54,14 +55,15 @@ function ResponsiveAppBar() {
 									display: { xs: 'none', md: 'flex' },
 									fontFamily: 'monospace',
 									fontWeight: 700,
-									letterSpacing: '.3rem',
+									// letterSpacing: '.2rem',
 									color: 'white',
 									textDecoration: 'none',
 								}}
 							>
-								LOGO
+								tpg
 							</Typography>
 					</NavLink>
+					<Divider orientation="vertical" variant="middle" />
 
 					{/* Nav options */}
 					<Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
@@ -133,7 +135,7 @@ function ResponsiveAppBar() {
 							textDecoration: 'none',
 						}}
 					>
-						LOGO
+						gpTravel
 					</Typography>
 					
 					{/* Account / Login */}
