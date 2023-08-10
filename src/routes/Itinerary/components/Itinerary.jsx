@@ -43,7 +43,6 @@ const Itinerary = () => {
             <>
                 <MapContainer center={[0, 0]} zoom={1} scrollWheelZoom={true} attributionControl={false} style={{ height: '100%', width: '100%' }}>
                     <MyMap activeTrip={activeTrip} />
-                    {/* <Toolbox activeTrip={activeTrip} activeDays={mapStatus.activeDays} handleActiveDays={handleActiveDays} handleZoom={handleZoom} /> */}
                 </MapContainer>
                 
             </>

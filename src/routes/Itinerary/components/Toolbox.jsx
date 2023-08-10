@@ -11,6 +11,8 @@ import KeyboardDoubleArrowLeftRoundedIcon from '@mui/icons-material/KeyboardDoub
 import ZoomOutMapIcon from '@mui/icons-material/ZoomOutMap';
 import ModeEditRoundedIcon from '@mui/icons-material/ModeEditRounded';
 
+import DayInfo from './DayInfo';
+
 const colors = {
     black: "#151515",
     red: "#a63d40",
@@ -18,34 +20,32 @@ const colors = {
     blue: "#6494aa",
     green: "#90a959"
 }
-const DRAWERWIDTH = 300;
-
 const Toolbox = ({ activeTrip, handleActiveDays, handleZoom }) => {
     const map = useMap();
     const [drawerOpen, setDrawerOpen] = useState(false);
 
     const handleDrawer = () => {
-        if (drawerOpen) map.panBy(L.point(-(DRAWERWIDTH / 2), 0));
-        if (!drawerOpen) map.panBy(L.point((DRAWERWIDTH / 2), 0))
+        if (drawerOpen) map.panBy(L.point(-150, 0));
+        if (!drawerOpen) map.panBy(L.point(150, 0))
         setDrawerOpen(!drawerOpen)
     }
 
-    const nodes = activeTrip.days.map((day, idx) => {
+    const nodes = activeTrip.days.map((day, day_idx) => {
         return (
-            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <Box key={"node__" + day.day_title} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <Checkbox
-                    icon={<CropFreeRoundedIcon sx={{ color: 'white', border: `2px solid ${Object.values(colors)[idx]}`, borderRadius: 1 }} />}
-                    checkedIcon={<SquareIcon sx={{ color: 'white', border: `2px solid ${Object.values(colors)[idx]}`, borderRadius: 1 }} />}
+                    icon={<CropFreeRoundedIcon sx={{ color: 'white', border: `2px solid ${Object.values(colors)[day_idx]}`, borderRadius: 1 }} />}
+                    checkedIcon={<SquareIcon sx={{ color: 'white', border: `2px solid ${Object.values(colors)[day_idx]}`, borderRadius: 1 }} />}
                     sx={{
                         width: 10,
                         height: 10,
                         mb: 1,
                     }}
                     defaultChecked={true}
-                    onChange={() => handleActiveDays(idx + 1)}
+                    onChange={() => handleActiveDays(day_idx + 1)}
                 />
-                <IconButton sx={{ height: '1.5rem', color: 'white', borderRadius: 1, '&:hover': { backgroundColor: grey[900] } }} onClick={() => handleZoom(idx + 1)}>
-                    <Typography>{idx + 1}</Typography>
+                <IconButton sx={{ height: '1.5rem', color: 'white', borderRadius: 1, '&:hover': { backgroundColor: grey[900] } }} onClick={() => handleZoom(day_idx + 1)}>
+                    <Typography>{day_idx + 1}</Typography>
                 </IconButton>
             </Box>
         )
@@ -53,14 +53,16 @@ const Toolbox = ({ activeTrip, handleActiveDays, handleZoom }) => {
 
     return (
         <>
+            {/* Sidebar */}
             <Box sx={{ display: 'flex', alignItems: 'center', height: 'calc(100% - 74px)', position: 'absolute', right: 0, top: 0, zIndex: '1002' }}>
                 <Box
                     sx={{
-                        width: 8,
-                        height: '20%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        height: '600px',
                         backgroundColor: grey[800],
-                        borderRadius: 3,
-                        mx: 1,
+                        borderTopLeftRadius: 10,
+                        borderBottomLeftRadius: 10,
                         '&:hover': {
                             backgroundColor: grey[900],
                             cursor: 'pointer'
@@ -68,18 +70,23 @@ const Toolbox = ({ activeTrip, handleActiveDays, handleZoom }) => {
                     }}
                     onClick={handleDrawer}
                 >
-                </Box>
-                <Collapse orientation="horizontal" in={drawerOpen}>
                     <Box
                         sx={{
-                            height: '700px',
-                            width: DRAWERWIDTH,
-                            backgroundColor: grey[300]
+                            width: 5,
+                            height: '20%',
+                            backgroundColor: grey[300],
+                            borderRadius: 3,
+                            mx: 0.7,
                         }}
                     >
                     </Box>
+                </Box>
+                <Collapse orientation="horizontal" in={drawerOpen}>
+                    <DayInfo activeTrip={activeTrip} handleZoom={handleZoom}/>
                 </Collapse>
             </Box>
+
+            {/* Bottom Toolbar */}
             <Box sx={{ width: '100%', position: 'absolute', bottom: '0', zIndex: '1001', backgroundColor: grey[800] }}>
                 <Grid container sx={{
                     display: 'flex',
