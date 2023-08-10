@@ -4,7 +4,6 @@ import { useParams } from 'react-router-dom'
 import { createClient } from '@supabase/supabase-js'
 
 import MyMap from './MyMap';
-import Toolbox from './Toolbox'
 
 ///// API CONFIGS /////
 const supabaseUrl = 'https://yjysjahnpuhgzefdvkta.supabase.co'
@@ -24,11 +23,6 @@ const Itinerary = () => {
         collaborators: "",
         days: ""
     })
-    const [mapStatus, setMapStatus] = useState({
-        activeDays: {},
-        zoomTo: ""
-    })
-    const [activeDays, setActiveDays] = useState({})
 
     const getTrip = async () => {
         const { data, error } = await supabase
@@ -38,50 +32,6 @@ const Itinerary = () => {
 
         const trip = data[0]
         setActiveTrip(trip)
-        setMapStatus((prevMapStatus) => {
-            const newActiveDays = {}
-            for (const [day_idx, day] of trip.days.entries()) {
-                newActiveDays[String(day_idx + 1)] = true;
-            }
-            return {
-                activeDays: newActiveDays,
-                zoomTo: "reset"
-            }
-        })
-        // setActiveDays((prevActiveDays) => {
-        //     const newActiveDays = {}
-        //     for (const [day_idx, day] of trip.days.entries()) {
-        //         newActiveDays[String(day_idx + 1)] = true;
-        //     }
-        //     return newActiveDays
-        // })
-    }
-
-    const handleActiveDays = (day_num) => {
-        setMapStatus((prevMapStatus) => {
-            const newMapStatus = {
-                ...prevMapStatus
-            };
-            newMapStatus.activeDays[day_num] = prevMapStatus.activeDays[day_num] ? false : true;
-            return newMapStatus
-        })
-        // setActiveDays((prevActiveDays) => {
-        //     const newActiveDays = {
-        //         ...prevActiveDays
-        //     }
-        //     newActiveDays[day_num] = prevActiveDays[day_num] ? false : true
-        //     return newActiveDays
-        // })
-    }
-
-    const handleZoom = (day_num) => {
-        setMapStatus((prevMapStatus) => {
-            const newMapStatus = {
-                ...prevMapStatus
-            };
-            newMapStatus.zoomTo = String(day_num)
-            return newMapStatus
-        })
     }
 
     useEffect(() => {
@@ -91,10 +41,11 @@ const Itinerary = () => {
     return (
         activeTrip.id ? (
             <>
-                <MapContainer center={[0, 0]} zoom={1} scrollWheelZoom={true} attributionControl={false} style={{ height: 'calc(100% - 100px)', width: '100%' }}>
-                    <MyMap activeTrip={activeTrip} mapStatus={mapStatus} />
+                <MapContainer center={[0, 0]} zoom={1} scrollWheelZoom={true} attributionControl={false} style={{ height: '100%', width: '100%' }}>
+                    <MyMap activeTrip={activeTrip} />
+                    {/* <Toolbox activeTrip={activeTrip} activeDays={mapStatus.activeDays} handleActiveDays={handleActiveDays} handleZoom={handleZoom} /> */}
                 </MapContainer>
-                <Toolbox activeTrip={activeTrip} activeDays={mapStatus.activeDays} handleActiveDays={handleActiveDays} handleZoom={handleZoom} />
+                
             </>
         ) : (
             null

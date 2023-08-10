@@ -4,6 +4,8 @@ import { useMap } from 'react-leaflet'
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css'
 
+import Toolbox from './Toolbox';
+
 // Leaflet.Icon.Default.imagePath = '../node_modules/leaflet'
 // delete Leaflet.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -33,10 +35,22 @@ const iconGenerator = () => {
 const icons = iconGenerator();
 const iconColors = ["black", "red", "yellow", "blue", "green"];
 
-const MyMap = ({ activeTrip, mapStatus }) => {
+const MyMap = ({ activeTrip }) => {
     const [firstLoad, setFirstLoad] = useState(true);
     const [tripMarkers, setTripMarkers] = useState({ edit: false, markers: {} })
     const map = useMap();
+
+    const handleActiveDays = (day_num) => {
+        map.hasLayer(tripMarkers.markers[day_num]) ? tripMarkers.markers[day_num].remove() : tripMarkers.markers[day_num].addTo(map)
+    }
+
+    const handleZoom = (day_num) => {
+        if (day_num === "reset") {
+            map.flyToBounds(findBounds(tripMarkers.markers), { duration: 1 });
+        } else {
+            map.flyToBounds(findBounds({_: tripMarkers.markers[day_num]}));
+        }
+    }
 
     const constructMarkers = () => {
         const allMarkers = {}
@@ -70,36 +84,31 @@ const MyMap = ({ activeTrip, mapStatus }) => {
                 bounds.extend(marker.getLatLng());
             })
         })
-        return bounds;
+        return bounds.pad(0.1);
     }
 
     if (firstLoad) {
         // set OSM basemap
-        const basemap = (L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        map.addLayer(L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }));
-        map.addLayer(basemap);
+        // add attribution
         L.control.attribution({ position: "topright" }).addTo(map);
 
+        // construct markers
         setTripMarkers({ edit: false, markers: constructMarkers() });
-
+        
         setFirstLoad(false);
     } else {
-        // set markers based on activeDays
-        for (const [day_num, active] of Object.entries(mapStatus.activeDays)) {
-            active ? tripMarkers.markers[day_num].addTo(map) : tripMarkers.markers[day_num].remove()
-        }
-
-        // set zoom area
-        if (mapStatus.zoomTo === "reset") {
-            map.flyToBounds(findBounds(tripMarkers.markers), { duration: 1 });
-        } else {
-            console.log(mapStatus.zoomTo)
-            map.flyToBounds(findBounds({_: tripMarkers.markers[mapStatus.zoomTo]}));
-        }
+        Object.values(tripMarkers.markers).forEach((markerGroup) => {
+            markerGroup.addTo(map);
+        })
+        handleZoom("reset")
     }
 
-    return null;
+    return (
+        <Toolbox activeTrip={activeTrip} handleActiveDays={handleActiveDays} handleZoom={handleZoom} />
+    );
 };
 
 export default MyMap;
