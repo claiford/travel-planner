@@ -42,27 +42,28 @@ function ResponsiveAppBar() {
 	const isLoggedIn = false;
 
 	return (
-		<AppBar position="static" sx={{ backgroundColor: grey[800]}}>
+		<AppBar position="static" sx={{ backgroundColor: grey[800] }}>
 			<Container maxWidth="false">
 				<Toolbar disableGutters>
 					{/* LOGO */}
 					<AirplaneTicketIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
 					<NavLink to="/" style={{ textDecoration: 'none', }}>
-							<Typography
-								variant="h6"
-								noWrap
-								sx={{
-									display: { xs: 'none', md: 'flex' },
-									fontWeight: 700,
-									letterSpacing: '.2rem',
-									color: 'white',
-									textDecoration: 'none',
-								}}
-							>
-								gpt
-							</Typography>
+						<Typography
+							variant="h6"
+							noWrap
+							sx={{
+								display: { xs: 'none', md: 'flex' },
+								fontWeight: 700,
+								letterSpacing: '.2rem',
+								color: 'white',
+								textDecoration: 'none',
+								pr: 1
+							}}
+						>
+							gpt
+						</Typography>
 					</NavLink>
-					<Divider orientation="vertical" variant="middle" />
+					<Divider orientation="vertical" variant="middle" flexItem sx={{ borderColor: grey[300] }} />
 
 					{/* Nav options */}
 					<Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
@@ -70,7 +71,7 @@ function ResponsiveAppBar() {
 							<NavLink key={page} to={`/${page.toLowerCase()}`} style={{ textDecoration: 'none' }}>
 								<Button
 									onClick={handleCloseNavMenu}
-									sx={{ my: 2, color: 'white', display: 'block' }}
+									sx={{ m: 2, color: 'white', display: 'block' }}
 								>
 									{page}
 								</Button>
@@ -136,7 +137,7 @@ function ResponsiveAppBar() {
 					>
 						gpt
 					</Typography>
-					
+
 					{/* Account / Login */}
 					{isLoggedIn ? (
 						<Box sx={{ flexGrow: 0 }}>

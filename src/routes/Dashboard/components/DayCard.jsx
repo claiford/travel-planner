@@ -1,10 +1,16 @@
-import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
+import { useState } from 'react';
+
+import { Box, Card, CardContent, Typography, Collapse, IconButton } from '@mui/material'
 import { List, ListItem, ListItemText } from '@mui/material';
+import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
 
 const DayCard = ({ day, num }) => {
+    const [infoOpen, setInfoOpen] = useState(false)
+
+    const handleInfo = () => {
+        setInfoOpen(infoOpen ? false : true);
+    }
+
     const locArr = day.day_locs.map((location) => {
         return (
             <ListItem disablePadding key={location.loc_name} sx={{ textAlign: 'center' }}>
@@ -15,20 +21,22 @@ const DayCard = ({ day, num }) => {
 
     return (
         <Box sx={{ minWidth: 275}}>
-            <Card variant="outlined" sx={{ my: '20px', height: '300px', borderRadius: '10%', borderColor: 'black'}}>
+            <Card variant="outlined" sx={{ my: '20px', borderRadius: 5 }}>
                 <CardContent>
-                    <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                        Day {num}
-                    </Typography>
                     <Typography variant="h6" component="div">
                         {day.day_title}
                     </Typography>
-                    <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                        {day.day_desc}
-                    </Typography>
-                    <List>
-                        {locArr}
-                    </List>
+                    <IconButton onClick={handleInfo}>
+                        <KeyboardArrowDownRoundedIcon />
+                    </IconButton>
+                    <Collapse in={infoOpen}>
+                        <Typography sx={{ my: 1, mx: 'auto', width: '80%' }} color="text.secondary">
+                            {day.day_desc}
+                        </Typography>
+                        <List>
+                            {locArr}
+                        </List>
+                    </Collapse>
                 </CardContent>
             </Card>
         </Box>

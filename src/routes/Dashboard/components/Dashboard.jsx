@@ -8,6 +8,7 @@ import AirplaneTicketRoundedIcon from '@mui/icons-material/AirplaneTicketRounded
 import LocationOnRoundedIcon from '@mui/icons-material/LocationOnRounded';
 import TodayRoundedIcon from '@mui/icons-material/TodayRounded';
 import EventRoundedIcon from '@mui/icons-material/EventRounded';
+import { grey } from '@mui/material/colors';
 
 import { Configuration, OpenAIApi } from "openai";
 import { createClient } from '@supabase/supabase-js'
@@ -161,14 +162,14 @@ const Dashboard = () => {
             width: '100%'
         }}>
             {/* Aside - List of trip belonging to user */}
-            <Box sx={{ width: '20%', p: '20px', border: '2px solid black' }}>
+            <Box sx={{ width: '20%', p: '20px', backgroundColor: grey[400] }}>
                 <Typography variant="h5" fontWeight={700} align='left' p={2}>Your Trips</Typography>
                 <List>
                     {planArr}
                 </List>
 
                 {/* New Trip functionalities */}
-                {generating.status ? (
+                {!generating.status ? (
                     <Button sx={{ width: '80%', borderWidth: '2px', my: 4 }} variant="outlined" color="warning" size="large" onClick={handleDialog}>
                         <Typography fontWeight={700}>
                             Generating
@@ -190,7 +191,7 @@ const Dashboard = () => {
             </Box>
 
             {/* Content - Display trip summary */}
-            <Box sx={{ width: '80%', border: '2px solid black', position: 'relative' }}>
+            <Box sx={{ width: '80%', position: 'relative' }}>
                 {useOutlet() ? (
                     <Outlet context={[trips, addTrip, deleteTrip]} />
                 ) : (
