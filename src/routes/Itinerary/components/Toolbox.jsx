@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import { Grid, Box, Button, IconButton, Typography, Checkbox } from '@mui/material';
-import { FormControl, FormGroup, FormControlLabel } from '@mui/material';
+import { Grid, Box, Stack, Button, IconButton, Typography, Checkbox } from '@mui/material';
 import { grey } from '@mui/material/colors';
 import Skeleton from '@mui/material/Skeleton';
 import Drawer from '@mui/material/Drawer';
 import SquareIcon from '@mui/icons-material/Square';
 import CropFreeRoundedIcon from '@mui/icons-material/CropFreeRounded';
 import KeyboardDoubleArrowLeftRoundedIcon from '@mui/icons-material/KeyboardDoubleArrowLeftRounded';
+import ZoomOutMapIcon from '@mui/icons-material/ZoomOutMap';
 import { Link } from 'react-router-dom';
 
 const colors = {
@@ -18,7 +18,7 @@ const colors = {
 }
 const drawerHeight = 500;
 
-const Toolbox = ({ activeTrip, activeDays, handleActiveDays }) => {
+const Toolbox = ({ activeTrip, activeDays, handleActiveDays, handleZoom }) => {
     const [open, setOpen] = useState(false);
 
     const toggleDrawer = () => {
@@ -27,10 +27,8 @@ const Toolbox = ({ activeTrip, activeDays, handleActiveDays }) => {
 
     const nodes = activeTrip.days.map((day, idx) => {
         return (
-            <FormControlLabel
-                key={idx}
-                value={idx + 1}
-                control={<Checkbox
+            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <Checkbox
                     icon={<CropFreeRoundedIcon sx={{ color: 'white', border: `2px solid ${Object.values(colors)[idx]}`, borderRadius: 1 }} />}
                     checkedIcon={<SquareIcon sx={{ color: 'white', border: `2px solid ${Object.values(colors)[idx]}`, borderRadius: 1 }} />}
                     sx={{
@@ -40,10 +38,11 @@ const Toolbox = ({ activeTrip, activeDays, handleActiveDays }) => {
                     }}
                     checked={activeDays[String(idx + 1)]}
                     onChange={() => handleActiveDays(idx + 1)}
-                />}
-                label={<Typography sx={{ color: 'white' }}>{idx + 1}</Typography>}
-                labelPlacement="bottom"
-            />
+                />
+                <IconButton sx={{ height: '1.5rem', color: 'white', borderRadius: 1, '&:hover': { backgroundColor: grey[900]}}} onClick={()=>handleZoom(idx + 1)}>
+                    <Typography>{idx + 1}</Typography>
+                </IconButton>
+            </Box>
         )
     })
 
@@ -59,19 +58,21 @@ const Toolbox = ({ activeTrip, activeDays, handleActiveDays }) => {
                 }}>
                     <Grid item xs={1}>
                         <Link to={`/dashboard/${activeTrip.id}`}>
-                            <Button variant='filled' color="info" sx={{'&:hover': { backgroundColor: grey[900] }}}>
-                                <KeyboardDoubleArrowLeftRoundedIcon sx={{color: 'white'}}/>
+                            <Button variant='filled' color="info" sx={{ '&:hover': { backgroundColor: grey[900] } }}>
+                                <KeyboardDoubleArrowLeftRoundedIcon sx={{ color: 'white' }} />
                             </Button>
                         </Link>
                     </Grid>
                     <Grid item xs={10}>
-                        <FormControl sx={{ display: 'block' }} component="fieldset">
-                            <FormGroup aria-label="position" row sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
-                                {nodes}
-                            </FormGroup>
-                        </FormControl>
+                        <Stack direction="row" justifyContent="center" spacing={3} sx={{ mt: 2, mb: 1 }}>
+                            {nodes}
+                        </Stack>
                     </Grid>
-                    <Grid item xs={1}></Grid>
+                    <Grid item xs={1}>
+                        <IconButton variant='filled' color="info" sx={{ '&:hover': { backgroundColor: grey[900] } }} onClick={()=>handleZoom('reset')}>
+                            <ZoomOutMapIcon sx={{ color: 'white' }}/>
+                        </IconButton>
+                    </Grid>
                 </Grid>
                 <Button
                     sx={{

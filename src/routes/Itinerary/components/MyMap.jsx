@@ -33,7 +33,7 @@ const iconGenerator = () => {
 const icons = iconGenerator();
 const iconColors = ["black", "red", "yellow", "blue", "green"];
 
-const MyMap = ({ activeTrip, activeDays }) => {
+const MyMap = ({ activeTrip, mapStatus }) => {
     const [firstLoad, setFirstLoad] = useState(true);
     const [tripMarkers, setTripMarkers] = useState({ edit: false, markers: {} })
     const map = useMap();
@@ -56,6 +56,9 @@ const MyMap = ({ activeTrip, activeDays }) => {
                 markersPerDay.addLayer(marker);
             }
             allMarkers[String(day_idx + 1)] = markersPerDay;
+
+            // allMarkers structure
+            // { [day_num] : layerGroup([markers])}
         }
         return allMarkers;
     }
@@ -82,12 +85,18 @@ const MyMap = ({ activeTrip, activeDays }) => {
 
         setFirstLoad(false);
     } else {
-        for (const [day_num, active] of Object.entries(activeDays)) {
+        // set markers based on activeDays
+        for (const [day_num, active] of Object.entries(mapStatus.activeDays)) {
             active ? tripMarkers.markers[day_num].addTo(map) : tripMarkers.markers[day_num].remove()
         }
 
-        // zoom to travel area
-        map.flyToBounds(findBounds(tripMarkers.markers), { duration: 1 });
+        // set zoom area
+        if (mapStatus.zoomTo === "reset") {
+            map.flyToBounds(findBounds(tripMarkers.markers), { duration: 1 });
+        } else {
+            console.log(mapStatus.zoomTo)
+            map.flyToBounds(findBounds({_: tripMarkers.markers[mapStatus.zoomTo]}));
+        }
     }
 
     return null;

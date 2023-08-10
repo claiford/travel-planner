@@ -169,7 +169,7 @@ const Dashboard = () => {
                 </List>
 
                 {/* New Trip functionalities */}
-                {!generating.status ? (
+                {generating.status ? (
                     <Button sx={{ width: '80%', borderWidth: '2px', my: 4 }} variant="outlined" color="warning" size="large" onClick={handleDialog}>
                         <Typography fontWeight={700}>
                             Generating
