@@ -23,11 +23,21 @@ const colors = {
 const Toolbox = ({ activeTrip, handleActiveDays, handleZoom }) => {
     const map = useMap();
     const [drawerOpen, setDrawerOpen] = useState(false);
+    const [focusInfo, setFocusInfo] = useState(1);
 
     const handleDrawer = () => {
         if (drawerOpen) map.panBy(L.point(-150, 0));
         if (!drawerOpen) map.panBy(L.point(150, 0))
         setDrawerOpen(!drawerOpen)
+    }
+
+    const handleInfo = (day_num) => {
+        setFocusInfo((prevFocusInfo) => day_num);
+    }
+
+    const setFocus = (day_num) => {
+        handleInfo(day_num);
+        handleZoom(day_num);
     }
 
     const nodes = activeTrip.days.map((day, day_idx) => {
@@ -44,7 +54,7 @@ const Toolbox = ({ activeTrip, handleActiveDays, handleZoom }) => {
                     defaultChecked={true}
                     onChange={() => handleActiveDays(day_idx + 1)}
                 />
-                <IconButton sx={{ height: '1.5rem', color: 'white', borderRadius: 1, '&:hover': { backgroundColor: grey[900] } }} onClick={() => handleZoom(day_idx + 1)}>
+                <IconButton sx={{ height: '1.5rem', color: 'white', borderRadius: 1, '&:hover': { backgroundColor: grey[900] } }} onClick={() => setFocus(day_idx + 1)}>
                     <Typography>{day_idx + 1}</Typography>
                 </IconButton>
             </Box>
@@ -82,7 +92,7 @@ const Toolbox = ({ activeTrip, handleActiveDays, handleZoom }) => {
                     </Box>
                 </Box>
                 <Collapse orientation="horizontal" in={drawerOpen}>
-                    <DayInfo activeTrip={activeTrip} handleZoom={handleZoom}/>
+                    <DayInfo activeTrip={activeTrip} handleZoom={handleZoom} focusInfo={focusInfo} handleInfo={handleInfo} />
                 </Collapse>
             </Box>
 

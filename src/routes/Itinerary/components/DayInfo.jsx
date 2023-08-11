@@ -3,12 +3,10 @@ import KeyboardArrowUpRoundedIcon from '@mui/icons-material/KeyboardArrowUpRound
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
 import CenterFocusStrongRoundedIcon from '@mui/icons-material/CenterFocusStrongRounded';
 import ImportExportRoundedIcon from '@mui/icons-material/ImportExportRounded';
-import ArrowDropUpRoundedIcon from '@mui/icons-material/ArrowDropUpRounded';
-import ArrowDropDownRoundedIcon from '@mui/icons-material/ArrowDropDownRounded';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import { grey } from '@mui/material/colors';
 
-const DayInfo = ({ activeTrip, handleZoom }) => {
+const DayInfo = ({ activeTrip, handleZoom, focusInfo, handleInfo }) => {
     const infoArr = activeTrip.days.map((day, day_idx) => {
         const locArr = day.day_locs.map(((loc) => {
             return (
@@ -48,13 +46,15 @@ const DayInfo = ({ activeTrip, handleZoom }) => {
                 key={"info_" + day.day_title}
                 sx={{
                     minHeight: '100%',
-                    display: 'flex',
+                    // display: 'flex',
+                    display: (focusInfo === day_idx + 1) ? 'flex' : 'none',
                     flexDirection: 'column',
                     gap: 2,
-                    p: 2
+                    p: 2,
+                    overflow: 'auto'
                 }}
             >
-                <Box sx={{display: 'flex', justifyContent: 'center', gap: 1, alignItems: 'center'}}>
+                <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1, alignItems: 'center' }}>
                     <Typography>{day.day_title}</Typography>
                     <IconButton onClick={() => handleZoom(day_idx + 1)}>
                         <CenterFocusStrongRoundedIcon />
@@ -85,6 +85,7 @@ const DayInfo = ({ activeTrip, handleZoom }) => {
                     width: '30px',
                     height: '30px'
                 }}
+                onClick={() => handleInfo(focusInfo - 1)}
             >
                 <KeyboardArrowUpRoundedIcon />
             </IconButton>
@@ -95,10 +96,18 @@ const DayInfo = ({ activeTrip, handleZoom }) => {
                     width: '90%',
                     display: 'flex',
                     flexDirection: 'column',
-                    overflow: 'hidden'
+                    overflow: 'hidden',
                 }}
             >
                 {infoArr}
+                {/* <Box
+                    sx={{
+                        position: 'relative',
+                        top: '-500px'
+                    }}
+                >
+                    {infoArr}
+                </Box> */}
             </Box>
 
             <IconButton
@@ -106,6 +115,7 @@ const DayInfo = ({ activeTrip, handleZoom }) => {
                     width: '30px',
                     height: '30px'
                 }}
+                onClick={() => handleInfo(focusInfo + 1)}
             >
                 <KeyboardArrowDownRoundedIcon />
             </IconButton>
