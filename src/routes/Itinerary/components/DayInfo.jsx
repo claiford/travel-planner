@@ -1,4 +1,4 @@
-import { Box, Button, IconButton, Typography } from '@mui/material';
+import { Box, Button, IconButton, Grow, Typography } from '@mui/material';
 import KeyboardArrowUpRoundedIcon from '@mui/icons-material/KeyboardArrowUpRounded';
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
 import CenterFocusStrongRoundedIcon from '@mui/icons-material/CenterFocusStrongRounded';
@@ -42,27 +42,28 @@ const DayInfo = ({ activeTrip, handleZoom, focusInfo, handleInfo }) => {
             )
         }))
         return (
-            <Box
-                key={"info_" + day.day_title}
-                sx={{
-                    minHeight: '100%',
-                    // display: 'flex',
-                    display: (focusInfo === day_idx + 1) ? 'flex' : 'none',
-                    flexDirection: 'column',
-                    gap: 2,
-                    p: 2,
-                    overflow: 'auto'
-                }}
-            >
-                <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1, alignItems: 'center' }}>
-                    <Typography>{day.day_title}</Typography>
-                    <IconButton onClick={() => handleZoom(day_idx + 1)}>
-                        <CenterFocusStrongRoundedIcon />
-                    </IconButton>
-                </Box>
+            <Grow in={focusInfo === day_idx + 1} timeout={500} mountOnEnter unmountOnExit>
+                <Box
+                    key={"info_" + day.day_title}
+                    sx={{
+                        minHeight: '100%',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: 2,
+                        px: 2,
+                        overflow: 'auto'
+                    }}
+                >
+                    <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1, alignItems: 'center' }}>
+                        <Typography>{day.day_title}</Typography>
+                        <IconButton onClick={() => handleZoom(day_idx + 1)}>
+                            <CenterFocusStrongRoundedIcon />
+                        </IconButton>
+                    </Box>
 
-                {locArr}
-            </Box>
+                    {locArr}
+                </Box>
+            </Grow>
         )
     })
 
