@@ -6,7 +6,7 @@ import { createClient } from '@supabase/supabase-js'
 import MyMap from './MyMap';
 
 ///// API CONFIGS /////
-const supabaseUrl = 'https://yjysjahnpuhgzefdvkta.supabase.co'
+const supabaseUrl = process.env.REACT_APP_SUPABASE_URL
 const supabaseKey = process.env.REACT_APP_SUPABASE_KEY
 const supabase = createClient(supabaseUrl, supabaseKey)
 ///// API CONFIGS /////

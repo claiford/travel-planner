@@ -32,7 +32,7 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration);
 const uid = new ShortUniqueId();
 
-const supabaseUrl = 'https://yjysjahnpuhgzefdvkta.supabase.co'
+const supabaseUrl = process.env.REACT_APP_SUPABASE_URL
 const supabaseKey = process.env.REACT_APP_SUPABASE_KEY
 const supabase = createClient(supabaseUrl, supabaseKey)
 ///// API CONFIGS /////

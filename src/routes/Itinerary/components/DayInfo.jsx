@@ -86,6 +86,7 @@ const DayInfo = ({ activeTrip, handleZoom, focusInfo, handleInfo }) => {
                     width: '30px',
                     height: '30px'
                 }}
+                disabled={focusInfo == 1}
                 onClick={() => handleInfo(focusInfo - 1)}
             >
                 <KeyboardArrowUpRoundedIcon />
@@ -116,6 +117,7 @@ const DayInfo = ({ activeTrip, handleZoom, focusInfo, handleInfo }) => {
                     width: '30px',
                     height: '30px'
                 }}
+                disabled={focusInfo == infoArr.length}
                 onClick={() => handleInfo(focusInfo + 1)}
             >
                 <KeyboardArrowDownRoundedIcon />
